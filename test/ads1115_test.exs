@@ -45,8 +45,9 @@ defmodule ADS1115Test do
         comp_mode: :traditional,
         comp_polarity: :active_low,
         comp_latch: false,
-        comp_queue: :disabled,
+        comp_queue: :disabled
       }
+
       assert ADS1115.Config.encode(config) == <<197, 131>>
     end
   end
