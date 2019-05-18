@@ -1,6 +1,20 @@
-# Ads1115
+# ADS1115
 
-**TODO: Add description**
+An Elixir library for interacting with ADS1115 analog-to-digital chips.
+Please see [the datasheet](http://www.ti.com/lit/gpn/ads1115) for details.
+
+## Usage
+
+I'm using these chips to read [moisture sensors](https://www.amazon.com/dp/B07H3P1NRM/ref=cm_sw_r_tw_dp_U_x_tvd4CbBE5DJS2).
+I wired the analog signal to `AIN0` and I want to compare that to `GND`.
+For this use-case I can do the following:
+
+```elixir
+{:ok, ref} = I2C.open("i2c-1")
+addr = 72 # the default i2c address for my sensor
+{:ok, reading} = ADS1115.single_shot_read(ref, addr, {:ain0, :gnd})
+# reading will be between -32,768 and 32,767
+```
 
 ## Installation
 
@@ -10,7 +24,7 @@ by adding `ads1115` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:ads1115, "~> 0.1.0"}
+    {:ads1115, "~> 0.1"}
   ]
 end
 ```

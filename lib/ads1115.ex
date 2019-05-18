@@ -13,9 +13,9 @@ defmodule ADS1115 do
     end
   end
 
-  @spec single_shot_read(reference(), byte(), Config.comparison(), Config.gain()) ::
+  @spec read(reference(), byte(), Config.comparison(), Config.gain()) ::
           {:ok, integer()} | {:error, term()}
-  def single_shot_read(bus, addr, comparison, gain \\ 2048) do
+  def read(bus, addr, comparison, gain \\ 2048) do
     config = %Config{
       performing_conversion: false,
       mode: :single_shot,
@@ -23,6 +23,11 @@ defmodule ADS1115 do
       gain: gain
     }
 
+    custom_read(bus, addr, config)
+  end
+
+  @spec custom_read(reference(), I2C.address(), Config.t()) :: {:ok, integer()} | {:error, term()}
+  def custom_read(bus, addr, %Config{}=config) do
     data = @config_register <> Config.encode(config)
 
     with :ok <- I2C.write(bus, addr, data),
