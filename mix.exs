@@ -7,7 +7,11 @@ defmodule Ads1115.MixProject do
       version: "0.1.0",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      docs: [
+        main: "readme",
+        extras: ["README.md"]
+      ]
     ]
   end
 
@@ -22,7 +26,8 @@ defmodule Ads1115.MixProject do
   defp deps do
     [
       {:circuits_i2c, "~> 0.3"},
-      {:dialyxir, "1.0.0-rc.6", only: :dev}
+      {:dialyxir, "1.0.0-rc.6", only: :dev},
+      {:ex_doc, "~> 0.20", only: :dev}
     ]
   end
 end

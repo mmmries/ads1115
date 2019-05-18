@@ -1,4 +1,13 @@
 defmodule ADS1115.Config do
+  @moduledoc """
+  A struct representing the configuration of an ADS1115 chip.
+
+  This module handles decoding the 2-byte binary representation of the register
+  into a struct and also encoding a struct back into the 2-byte binary representation.
+  For details about what the various configuration options mean, please see
+  [the datasheet](http://www.ti.com/lit/gpn/ads1115).
+  """
+
   @type comp_mode :: :traditional | :window
   @type comp_polarity :: :active_low | :active_high
   @type comp_queue :: 1 | 2 | 3 | :disabled
