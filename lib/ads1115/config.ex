@@ -1,19 +1,25 @@
 defmodule ADS1115.Config do
-  @type input :: :ain0, :ain1, :ain2, :ain3, :gnd
+  @type comp_mode :: :traditional | :window
+  @type comp_polarity :: :active_low | :active_high
+  @type comp_queue :: 1 | 2 | 3 | :disabled
+  @type comparison :: {:ain0, :ain1 | :ain3 | :gnd} | {:ain1, :ain3 | :gnd} | {:ain2, :ain3 | :gnd} | {:ain3, :gnd}
+  @type data_rate :: 8 | 16 | 32 | 64 | 128 | 250 | 475 | 860
+  @type gain :: 256 | 512 | 1024 | 2048 | 4096 | 6144
+  @type mode :: :continuous | :single_shot
   @type t :: %__MODULE__{
     performing_conversion: true | false,
-    mux: [input, ...],
-    gain: non_neg_integer(),
-    mode: :continuous | :single_shot,
-    data_rate: non_neg_integer(),
-    comp_mode: :traditional | :window,
-    comp_polarity: :active_low | :active_high,
+    mux: comparison,
+    gain: gain,
+    mode: mode,
+    data_rate: data_rate,
+    comp_mode: comp_mode,
+    comp_polarity: comp_polarity,
     comp_latch: true | false,
-    comp_queue: 1 | 2 | 3 | :disabled,
+    comp_queue: comp_queue,
   }
   defstruct [
     performing_conversion: false, # set to false to trigger a single-shot reading
-    mux: [:ain0, :ain1],
+    mux: {:ain0, :ain1},
     gain: 2048,
     mode: :single_shot,
     data_rate: 128,
@@ -23,6 +29,7 @@ defmodule ADS1115.Config do
     comp_queue: :disabled
   ]
 
+  @spec encode(ADS1115.Config.t()) :: <<_::16>>
   def encode(%__MODULE__{}=config) do
     <<
       encode_performing_conversion(config.performing_conversion)::size(1),
@@ -37,6 +44,7 @@ defmodule ADS1115.Config do
     >>
   end
 
+  @spec decode(<<_::16>>) :: ADS1115.Config.t()
   def decode(bytes) when is_binary(bytes) do
     << performing_conversion::size(1),
        mux::size(3),
@@ -62,14 +70,14 @@ defmodule ADS1115.Config do
 
   defp encode_performing_conversion(true), do: 0
   defp encode_performing_conversion(false), do: 1
-  defp encode_mux([:ain0, :ain1]), do: 0
-  defp encode_mux([:ain0, :ain3]), do: 1
-  defp encode_mux([:ain1, :ain3]), do: 2
-  defp encode_mux([:ain2, :ain3]), do: 3
-  defp encode_mux([:ain0, :gnd]), do: 4
-  defp encode_mux([:ain1, :gnd]), do: 5
-  defp encode_mux([:ain2, :gnd]), do: 6
-  defp encode_mux([:ain3, :gnd]), do: 7
+  defp encode_mux({:ain0, :ain1}), do: 0
+  defp encode_mux({:ain0, :ain3}), do: 1
+  defp encode_mux({:ain1, :ain3}), do: 2
+  defp encode_mux({:ain2, :ain3}), do: 3
+  defp encode_mux({:ain0, :gnd}), do: 4
+  defp encode_mux({:ain1, :gnd}), do: 5
+  defp encode_mux({:ain2, :gnd}), do: 6
+  defp encode_mux({:ain3, :gnd}), do: 7
   defp encode_gain(6144), do: 0
   defp encode_gain(4096), do: 1
   defp encode_gain(2048), do: 2
@@ -98,14 +106,14 @@ defmodule ADS1115.Config do
   defp encode_comp_queue(:disabled), do: 3
 
   defp performing_conversion(bit), do: bit == 0
-  defp mux(0), do: [:ain0, :ain1]
-  defp mux(1), do: [:ain0, :ain3]
-  defp mux(2), do: [:ain1, :ain3]
-  defp mux(3), do: [:ain2, :ain3]
-  defp mux(4), do: [:ain0, :gnd]
-  defp mux(5), do: [:ain1, :gnd]
-  defp mux(6), do: [:ain2, :gnd]
-  defp mux(7), do: [:ain3, :gnd]
+  defp mux(0), do: {:ain0, :ain1}
+  defp mux(1), do: {:ain0, :ain3}
+  defp mux(2), do: {:ain1, :ain3}
+  defp mux(3), do: {:ain2, :ain3}
+  defp mux(4), do: {:ain0, :gnd}
+  defp mux(5), do: {:ain1, :gnd}
+  defp mux(6), do: {:ain2, :gnd}
+  defp mux(7), do: {:ain3, :gnd}
   defp gain(0), do: 6144
   defp gain(1), do: 4096
   defp gain(2), do: 2048

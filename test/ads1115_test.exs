@@ -5,7 +5,7 @@ defmodule ADS1115Test do
     test "default config state" do
       assert %ADS1115.Config{} = config = ADS1115.Config.decode(<<133, 131>>)
       assert config.performing_conversion == false
-      assert config.mux == [:ain0, :ain1]
+      assert config.mux == {:ain0, :ain1}
       assert config.gain == 2048
       assert config.mode == :single_shot
       assert config.data_rate == 128
@@ -18,7 +18,7 @@ defmodule ADS1115Test do
     test "comparing AIN0 vs GND" do
       assert %ADS1115.Config{} = config = ADS1115.Config.decode(<<197, 131>>)
       assert config.performing_conversion == false
-      assert config.mux == [:ain0, :gnd]
+      assert config.mux == {:ain0, :gnd}
       assert config.gain == 2048
       assert config.mode == :single_shot
       assert config.data_rate == 128
@@ -38,7 +38,7 @@ defmodule ADS1115Test do
     test "custom config" do
       config = %ADS1115.Config{
         performing_conversion: false,
-        mux: [:ain0, :gnd],
+        mux: {:ain0, :gnd},
         gain: 2048,
         mode: :single_shot,
         data_rate: 128,

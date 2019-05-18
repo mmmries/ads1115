@@ -22,6 +22,7 @@ defmodule Ads1115.MixProject do
   defp deps do
     [
       {:circuits_i2c, "~> 0.3"},
+      {:dialyxir, "1.0.0-rc.6", only: :dev}
     ]
   end
 end
