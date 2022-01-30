@@ -1,11 +1,11 @@
 defmodule ADS1015.Config do
   @moduledoc """
-  A struct representing the configuration of an ADS1115 chip.
+  A struct representing the configuration of an ADS1015 chip.
 
   This module handles decoding the 2-byte binary representation of the register
   into a struct and also encoding a struct back into the 2-byte binary representation.
   For details about what the various configuration options mean, please see
-  [the datasheet](http://www.ti.com/lit/gpn/ads1115).
+  [the datasheet](http://www.ti.com/lit/gpn/ads1015).
   """
 
   @type comp_mode :: :traditional | :window

@@ -1,10 +1,10 @@
 defmodule ADS1015 do
   @moduledoc """
-  Functions to interact with an ADS1115 analog-to-digital chip
+  Functions to interact with an ADS1015 analog-to-digital chip
   """
 
   alias Circuits.I2C
-  alias ADS1115.Config
+  alias ADS1015.Config
 
   @config_register <<1>>
   @sensor_register <<0>>
