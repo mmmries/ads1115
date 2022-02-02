@@ -4,7 +4,7 @@ defmodule Ads1115.MixProject do
   def project do
     [
       app: :ads1115,
-      version: "0.2.0",
+      version: "0.2.1",
       elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
@@ -32,7 +32,7 @@ defmodule Ads1115.MixProject do
 
   defp package do
     [
-      description: "Interact with ADS1115 Analog-to-Digital Chips",
+      description: "Interact with ADS1115 or ADS1015 Analog-to-Digital Chips",
       licenses: ["MIT"],
       links: %{
         "Github" => "https://github.com/mmmries/ads1115"
