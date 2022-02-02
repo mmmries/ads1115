@@ -1,6 +1,6 @@
 # ADS1115
 
-An Elixir library for interacting with ADS1115 analog-to-digital chips.
+An Elixir library for interacting with ADS1115 and ADS1015 analog-to-digital chips.
 Please see [the datasheet](http://www.ti.com/lit/gpn/ads1115) for details.
 
 ## Usage
@@ -14,6 +14,14 @@ For this use-case I can do the following:
 addr = 72 # the default i2c address for my sensor
 {:ok, reading} = ADS1115.single_shot_read(ref, addr, {:ain0, :gnd})
 # reading will be between -32,768 and 32,767
+```
+
+You can similarly use this library to interact with ADS1015 chips like this:
+
+```elixir
+{:ok, ref} = I2C.open("i2c-1")
+addr = 72 # the default i2c address for my sensor
+{:ok, reading} = ADS1015.single_shot_read(ref, addr, {:ain0, :gnd})
 ```
 
 ## Installation
