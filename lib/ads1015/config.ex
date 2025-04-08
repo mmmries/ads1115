@@ -31,10 +31,13 @@ defmodule ADS1015.Config do
           comp_queue: comp_queue
         }
   defstruct performing_conversion: false,
-            mux: {:ain0, :ain1},  #default
-            gain: 2048, # default
+            # default
+            mux: {:ain0, :ain1},
+            # default
+            gain: 2048,
             mode: :single_shot,
-            data_rate: 1600,  # default
+            # default
+            data_rate: 1600,
             comp_mode: :traditional,
             comp_polarity: :active_low,
             comp_latch: false,
@@ -76,7 +79,9 @@ defmodule ADS1015.Config do
 
   defp encode_performing_conversion(true), do: 0
   defp encode_performing_conversion(false), do: 1
-  defp encode_mux({:ain0, :ain1}), do: 0      # default
+
+  # default
+  defp encode_mux({:ain0, :ain1}), do: 0
   defp encode_mux({:ain0, :ain3}), do: 1
   defp encode_mux({:ain1, :ain3}), do: 2
   defp encode_mux({:ain2, :ain3}), do: 3
@@ -86,19 +91,27 @@ defmodule ADS1015.Config do
   defp encode_mux({:ain3, :gnd}), do: 7
   defp encode_gain(6144), do: 0
   defp encode_gain(4096), do: 1
-  defp encode_gain(2048), do: 2  # default
+
+  # default
+  defp encode_gain(2048), do: 2
   defp encode_gain(1024), do: 3
   defp encode_gain(512), do: 4
-  defp encode_gain(256), do: 5  # 6 and 7 map to same gain
+
+  # 6 and 7 map to same gain
+  defp encode_gain(256), do: 5
   defp encode_mode(:continuous), do: 0
   defp encode_mode(:single_shot), do: 1
   defp encode_data_rate(128), do: 0
   defp encode_data_rate(250), do: 1
   defp encode_data_rate(490), do: 2
   defp encode_data_rate(920), do: 3
-  defp encode_data_rate(1600), do: 4  #default
+
+  # default
+  defp encode_data_rate(1600), do: 4
   defp encode_data_rate(2400), do: 5
-  defp encode_data_rate(3300), do: 6  # 7 maps to same data rate
+
+  # 7 maps to same data rate
+  defp encode_data_rate(3300), do: 6
   defp encode_comp_mode(:traditional), do: 0
   defp encode_comp_mode(:window), do: 1
   defp encode_comp_polarity(:active_low), do: 0
