@@ -20,7 +20,7 @@ defmodule ADS1015 do
 
   @doc "Set the configuration on the device"
   @spec set_config(reference(), I2C.address(), Config.t()) :: :ok | {:error, term()}
-  def set_config(bus, addr, %Config{}=config) do
+  def set_config(bus, addr, %Config{} = config) do
     bytes = @config_register <> Config.encode(config)
     I2C.write(bus, addr, bytes)
   end
@@ -39,7 +39,7 @@ defmodule ADS1015 do
     custom_read(bus, addr, config)
   end
 
- @doc """
+  @doc """
   Ask for a reading of an analog signal with customizable comparison parameters.
 
   This will write the configuration register, then wait for the reading to be ready and read it back.
@@ -49,17 +49,19 @@ defmodule ADS1015 do
   ADS1015 uses 16bit register but it has a 12bit value.
   """
   @spec custom_read(reference(), I2C.address(), Config.t()) :: {:ok, integer()} | {:error, term()}
-  def custom_read(bus, addr, %Config{}=config) do
+  def custom_read(bus, addr, %Config{} = config) do
     with :ok <- set_config(bus, addr, config),
          :ok <- wait_for_reading(bus, addr),
          {:ok, <<val::signed-size(16)>>} <- I2C.write_read(bus, addr, @sensor_register, 2) do
-
-           val = val / 16 # equivalent to val >> 4
-           if val > 2047 do   # 0x7FF
-             {:ok, val - 4096}  # double 2048
-           else
-             {:ok, val}
-           end
+      # equivalent to val >> 4
+      val = val / 16
+      # 0x7FF
+      if val > 2047 do
+        # double 2048
+        {:ok, val - 4096}
+      else
+        {:ok, val}
+      end
     end
   end
 

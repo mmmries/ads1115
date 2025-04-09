@@ -20,7 +20,7 @@ defmodule ADS1115 do
 
   @doc "Set the configuration on the device"
   @spec set_config(reference(), I2C.address(), Config.t()) :: :ok | {:error, term()}
-  def set_config(bus, addr, %Config{}=config) do
+  def set_config(bus, addr, %Config{} = config) do
     bytes = @config_register <> Config.encode(config)
     I2C.write(bus, addr, bytes)
   end
@@ -47,7 +47,7 @@ defmodule ADS1115 do
   we are waiting for a reading.
   """
   @spec custom_read(reference(), I2C.address(), Config.t()) :: {:ok, integer()} | {:error, term()}
-  def custom_read(bus, addr, %Config{}=config) do
+  def custom_read(bus, addr, %Config{} = config) do
     with :ok <- set_config(bus, addr, config),
          :ok <- wait_for_reading(bus, addr),
          {:ok, <<val::signed-size(16)>>} <- I2C.write_read(bus, addr, @sensor_register, 2) do

@@ -4,8 +4,8 @@ defmodule Ads1115.MixProject do
   def project do
     [
       app: :ads1115,
-      version: "0.2.1",
-      elixir: "~> 1.8",
+      version: "0.2.2",
+      elixir: "~> 1.13",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
@@ -24,9 +24,9 @@ defmodule Ads1115.MixProject do
 
   defp deps do
     [
-      {:circuits_i2c, "~> 0.3"},
-      {:dialyxir, "1.0.0-rc.6", only: :dev},
-      {:ex_doc, "~> 0.20", only: :dev}
+      {:circuits_i2c, "~> 2.1"},
+      {:dialyxir, "1.4.5", only: :dev},
+      {:ex_doc, "~> 0.37", only: :dev}
     ]
   end
 
